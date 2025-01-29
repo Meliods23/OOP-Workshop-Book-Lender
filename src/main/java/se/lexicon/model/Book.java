@@ -1,6 +1,8 @@
 package se.lexicon.model;
 
 
+import java.util.UUID;
+
 /**
  * This class represents a Book model with properties and methods
  * to manage book-related information and operations.
@@ -8,13 +10,14 @@ package se.lexicon.model;
 public class Book {
     // todo: needs completion
 
-    private int id;
-    private int borrower;
+    // Generates a random Id for the book
+    private final String id = UUID.randomUUID().toString();
 
+
+    private Person borrower;
     private String title;
     private String author;
-
-    private boolean available;
+    public boolean available = true;
 
     public Book(String title, String author)
     {
@@ -26,9 +29,10 @@ public class Book {
         {
             this.author = author;
         }
+
     }
 
-    public Book(String title, String author, int borrower)
+    public Book(String title, String author, Person borrower)
     {
         if(title != null)
         {
@@ -38,16 +42,35 @@ public class Book {
         {
             this.author = author;
         }
-        if(borrower != 0)
+        if(borrower != null)
         {
             this.borrower = borrower;
+            borrower.loanBook(this);
         }
+
     }
 
 
+    // Returns info about the book including : Name, Author, Id and lending status
     public String getBookInformation()
     {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Book title: ").append(title + ", ")
+                .append("Book author: ").append(author + ", ");
 
-        return null;
+        if (!available)
+        {
+            sb.append("Borrowed : ").append("Yes, ")
+                    .append("Book Id: ").append(id + "\n");
+        }
+        else
+        {
+            sb.append("Borrowed : ").append("No, ")
+                    .append("Book Id: ").append(id + "\n");
+        }
+
+
+        return sb.toString();
     }
+
 }
